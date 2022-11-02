@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+    
+jobs:
+  build-deploy:
+
+    env:
+      BUILD_CONFIG: 'Release'
+      SOLUTION: 'ToolPack.DomainUtils.sln'
+      PUSH_PACKAGES: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2.1.0
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.6
+
+    - name: Restore dependencies
+      run: nuget restore $SOLUTION
+      
+    - name: Build
+      run: dotnet build $SOLUTION --configuration $BUILD_CONFIG --no-restore
+
+    - name: Run tests
+      run: dotnet test --verbosity normal
+
+    - name: Pack
+      if: ${{ env.PUSH_PACKAGES }}
+      run: dotnet pack $SOLUTION --configuration $BUILD_CONFIG --no-restore
+
+    - name: Publish
+      if: ${{ env.PUSH_PACKAGES }}
+      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_NUNOHPINHEIRO}}
