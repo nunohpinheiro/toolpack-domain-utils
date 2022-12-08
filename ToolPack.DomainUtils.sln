@@ -19,13 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolPack.DomainUtils.Functional", "src\ToolPack.DomainUtils.Functional\ToolPack.DomainUtils.Functional.csproj", "{2593CF74-97E6-43B6-B4D8-4956E76435F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolPack.DomainUtils.Functional", "src\ToolPack.DomainUtils.Functional\ToolPack.DomainUtils.Functional.csproj", "{2593CF74-97E6-43B6-B4D8-4956E76435F8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9BC5336-FA37-454C-87AB-B3C3DEF558E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8B4B84AC-C9E3-45C6-BA77-F2735B5815A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolPack.DomainUtils.ValueObjects", "src\ToolPack.DomainUtils.ValueObjects\ToolPack.DomainUtils.ValueObjects.csproj", "{5A3BF57E-F93A-4A46-ADD2-269C6918DD02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolPack.DomainUtils.ValueObjects", "src\ToolPack.DomainUtils.ValueObjects\ToolPack.DomainUtils.ValueObjects.csproj", "{5A3BF57E-F93A-4A46-ADD2-269C6918DD02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{5A3BF57E-F93A-4A46-ADD2-269C6918DD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A3BF57E-F93A-4A46-ADD2-269C6918DD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A3BF57E-F93A-4A46-ADD2-269C6918DD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{031DA972-2BD4-4A98-A910-D9FB718F8C72} = {C5E3DA24-339B-424D-A892-50BF7059E10F}
 		{2593CF74-97E6-43B6-B4D8-4956E76435F8} = {A9BC5336-FA37-454C-87AB-B3C3DEF558E8}
 		{5A3BF57E-F93A-4A46-ADD2-269C6918DD02} = {A9BC5336-FA37-454C-87AB-B3C3DEF558E8}
+		{AEE22A11-4344-4698-9EA1-4AAAF6E1C5F8} = {8B4B84AC-C9E3-45C6-BA77-F2735B5815A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62566100-10BD-4048-A00A-1512C357472D}
