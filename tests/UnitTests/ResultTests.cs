@@ -1,175 +1,108 @@
-namespace UnitTests;
+namespace ToolPack.DomainUtils.Functional.UnitTests;
 
 using FluentAssertions;
 using ToolPack.DomainUtils.Functional;
-using ToolPack.DomainUtils.Functional.Output;
 
 public class ResultTests
 {
     [Test]
-    public void NOk_CreatesNOk_IsNOk_HasError()
+    public void Result_Combine_FailedResults_ReturnsErrorWithInnerErrors()
+    {
+        Result<object> resultError1 = new Error("error-message", "one-title");
+        Result<string> resultError2 = new Error("error-message", resultError1.Error!.Title);
+        Result resultError3 = new Error("another-error-message", "three-title");
+        
+        var combinedResult = Result.Combine(resultError1, resultError2, resultError3);
+
+        combinedResult.Should()
+            .Match<Result>(x => x.IsFailure && !x.IsSuccess);
+
+        combinedResult.Error.Should()
+            .Match<Error>(x
+                => x.InnerErrors.Count == 2
+                && x.InnerErrors[resultError1.Error!.Title].Length == 2
+                && x.InnerErrors[resultError3.Error!.Title].Length == 1
+                && x.InnerErrors[resultError1.Error!.Title][0] == resultError1.Error
+                && x.InnerErrors[resultError1.Error!.Title][1] == resultError2.Error
+                && x.InnerErrors[resultError3.Error!.Title][0] == resultError3.Error);
+    }
+
+    [Test]
+    public void Result_Combine_SuccessFailedResults_ReturnsErrorWithInnerErrors()
+    {
+        Result<object> resultError1 = new Error("error-message", "one-title");
+        Result<string> resultError2 = new Error("error-message", resultError1.Error!.Title);
+        Result resultSuccess = new Success();
+
+        var combinedResult = Result.Combine(resultError1, resultError2, resultSuccess);
+
+        combinedResult.Should()
+            .Match<Result>(x => x.IsFailure && !x.IsSuccess);
+
+        combinedResult.Error.Should()
+            .Match<Error>(x
+                => x.InnerErrors.Count == 1
+                && x.InnerErrors[resultError1.Error!.Title].Length == 2
+                && x.InnerErrors[resultError1.Error!.Title][0] == resultError1.Error
+                && x.InnerErrors[resultError1.Error!.Title][1] == resultError2.Error);
+    }
+
+    [Test]
+    public void Result_Combine_SuccessResults_ReturnsSuccess()
+    {
+        Result success1 = new Success();
+        Result<int> success2 = 1234567890;
+
+        var combinedResult = Result.Combine(success1, success2);
+
+        combinedResult.Should()
+            .Match<Result>(x => x.IsSuccess && !x.IsFailure && x.Value == new Success());
+    }
+
+    [Test]
+    public void Result_CreateFailure_IsFailure_HasError_MatchesImplicit()
     {
         var error = new Error("error-message");
-        var nok = Result.NOk(error);
-        nok.Should().Match<NOk<Error>>(x
-            => x.IsNOk && !x.IsOk && x.Error == error);
+        var explicitFailure = Result.Failure(error);
+        Result implicitFailure = error;
+
+        explicitFailure.Should()
+            .Be(implicitFailure)
+            .And.Match<Result>(x => x.IsFailure && !x.IsSuccess && x.Error == error);
     }
 
     [Test]
-    public void Ok_CreatesOk_IsOk()
-        => Result.Ok()
-        .Should().Match<Ok>(x => x.IsOk && !x.IsNOk);
-
-    [Test]
-    public void OkValue_CreatesOk_IsOk_HasValue()
+    public void Result_CreateSuccess_IsSuccess_MatchesImplicit()
     {
-        var value = "just-a-value-string";
-        var ok = Result.Ok(value);
-        ok.Should().Match<Ok<string>>(x
-            => x.IsOk && !x.IsNOk && x.Value == value);
+        var explicitSuccess = Result.Success();
+        Result implicitSuccess = new Success();
+
+        explicitSuccess.Should()
+            .Be(implicitSuccess)
+            .And.Match<Result>(x => !x.IsFailure && x.IsSuccess && x.Value == new Success());
     }
 
     [Test]
-    public void TryGetNOkError_IsNOk_GetsError()
+    public void ResultT_CreateFailure_IsFailure_HasError_MatchesImplicit()
     {
-        // Arrange
         var error = new Error("error-message");
-        var nok = Result.NOk(error);
+        var explicitFailure = Result<object>.Failure(error);
+        Result<object> implicitFailure = error;
 
-        // Act
-        var hasValue = nok.TryGetNOkError(out Error errorOutput);
-
-        // Assert
-        hasValue.Should().BeTrue();
-        errorOutput.Should().BeEquivalentTo(error);
+        explicitFailure.Should()
+            .Be(implicitFailure)
+            .And.Match<Result<object>>(x => x.IsFailure && !x.IsSuccess && x.Error == error);
     }
 
     [Test]
-    public void TryGetNOkError_IsNOk_IsResult_GetsError()
+    public void ResultT_CreateSuccess_IsSuccess_HasValue_MatchesImplicit()
     {
-        // Arrange
-        var error = new Error("error-message");
-        var result = (Result)Result.NOk(error);
+        var successValue = "just-a-value-string";
+        var explicitSuccess = Result<string>.Success(successValue);
+        Result<string> implicitSuccess = successValue;
 
-        // Act
-        var hasValue = result.TryGetNOkError(out Error errorOutput);
-
-        // Assert
-        hasValue.Should().BeTrue();
-        errorOutput.Should().BeEquivalentTo(error);
-    }
-
-    [Test]
-    public void TryGetNOkError_IsNOk_WithDifferentErrorType_ReturnsFalse()
-    {
-        // Arrange
-        var nok = Result.NOk(new Error("error-message"));
-
-        // Act
-        var hasValue = nok.TryGetNOkError(out string inexistentError);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        inexistentError.Should().BeNull();
-    }
-
-    [Test]
-    public void TryGetNOkError_IsOk_ReturnsFalse()
-    {
-        // Arrange
-        var ok = Result.Ok();
-
-        // Act
-        var hasValue = ok.TryGetNOkError(out Error errorOutput);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        errorOutput.Should().BeNull();
-    }
-
-    [Test]
-    public void TryGetNOkError_IsOk_IsResult_ReturnsFalse()
-    {
-        // Arrange
-        var result = (Result)Result.Ok();
-
-        // Act
-        var hasValue = result.TryGetNOkError(out Error errorOutput);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        errorOutput.Should().BeNull();
-    }
-
-    [Test]
-    public void TryGetOkValue_IsOkValue_GetsValue()
-    {
-        // Arrange
-        var value = "sample-value";
-        var ok = Result.Ok(value);
-
-        // Act
-        var hasValue = ok.TryGetOkValue(out string valueOutput);
-
-        // Assert
-        hasValue.Should().BeTrue();
-        valueOutput.Should().BeEquivalentTo(value);
-    }
-
-    [Test]
-    public void TryGetOkValue_IsOkValue_IsResult_GetsValue()
-    {
-        // Arrange
-        var value = "sample-value";
-        var result = (Result)Result.Ok(value);
-
-        // Act
-        var hasValue = result.TryGetOkValue(out string valueOutput);
-
-        // Assert
-        hasValue.Should().BeTrue();
-        valueOutput.Should().BeEquivalentTo(value);
-    }
-
-    [Test]
-    public void TryGetOkValue_IsOkValue_WithDifferentErrorType_ReturnsFalse()
-    {
-        // Arrange
-        var ok = Result.Ok("the result");
-
-        // Act
-        var hasValue = ok.TryGetOkValue(out object inexistentValue);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        inexistentValue.Should().BeNull();
-    }
-
-    [Test]
-    public void TryGetOkValue_IsNOk_ReturnsFalse()
-    {
-        // Arrange
-        var nok = Result.NOk("a-mistake");
-
-        // Act
-        var hasValue = nok.TryGetOkValue(out object outputValue);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        outputValue.Should().BeNull();
-    }
-
-    [Test]
-    public void TryGetOkValue_IsNOk_IsResult_ReturnsFalse()
-    {
-        // Arrange
-        var result = (Result)Result.NOk("a-mistake");
-
-        // Act
-        var hasValue = result.TryGetOkValue(out object outputValue);
-
-        // Assert
-        hasValue.Should().BeFalse();
-        outputValue.Should().BeNull();
+        explicitSuccess.Should()
+            .Be(implicitSuccess)
+            .And.Match<Result<string>>(x => !x.IsFailure && x.IsSuccess && x.Value == successValue);
     }
 }

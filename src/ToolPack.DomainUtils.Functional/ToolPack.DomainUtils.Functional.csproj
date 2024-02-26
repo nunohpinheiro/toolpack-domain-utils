@@ -1,30 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <IsPackable>true</IsPackable>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-        <Authors>nunohpinheiro</Authors>
+    <Authors>nunohpinheiro</Authors>
 
-        <Description>
-            NuGet package with useful functional resources for .NET solutions.
-            Repo: https://github.com/nunohpinheiro/toolpack-domain-utils
-        </Description>
+    <Description>
+      NuGet package with useful functional resources for .NET solutions.
+      Repo: https://github.com/nunohpinheiro/toolpack-domain-utils
+    </Description>
 
-        <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
 
-        <PackageId>ToolPack.DomainUtils.Functional</PackageId>
-        <PackageProjectUrl>https://github.com/nunohpinheiro/toolpack-domain-utils</PackageProjectUrl>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageTags>Domain;Functional</PackageTags>
+    <PackageId>ToolPack.DomainUtils.Functional</PackageId>
+    <PackageProjectUrl>https://github.com/nunohpinheiro/toolpack-domain-utils</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Domain;Functional</PackageTags>
 
-        <RepositoryUrl>https://github.com/nunohpinheiro/toolpack-domain-utils</RepositoryUrl>
-    </PropertyGroup>
+    <RepositoryUrl>https://github.com/nunohpinheiro/toolpack-domain-utils</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+  </ItemGroup>
 
 </Project>
