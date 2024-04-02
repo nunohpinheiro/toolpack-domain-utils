@@ -17,7 +17,7 @@
       Repo: https://github.com/nunohpinheiro/toolpack-domain-utils
     </Description>
 
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
 
     <PackageId>ToolPack.DomainUtils.Functional</PackageId>
     <PackageProjectUrl>https://github.com/nunohpinheiro/toolpack-domain-utils</PackageProjectUrl>

@@ -4,8 +4,8 @@ namespace ToolPack.DomainUtils.Functional;
 public static class ResultExecuteExtensions
 {
     /// <summary>Executes a <see cref="IResult"/> function according to an input <see cref="Result"/>.</summary>
-    public static IResult Execute(this IResult result, Func<IResult> resultFunc)
-        => result.IsSuccess ? resultFunc() : result;
+    public static Result<Tout> Execute<Tin, Tout>(this Result<Tin> result, Func<Result<Tout>> resultFunc)
+        => result.IsSuccess ? resultFunc() : result.Error!;
 
     /// <summary>Executes an action according to an input <see cref="IResult"/>.</summary>
     public static void Execute(this IResult result, Action resultAct)
@@ -15,8 +15,8 @@ public static class ResultExecuteExtensions
     }
 
     /// <summary>Executes an async <see cref="IResult"/> function according to an input <see cref="IResult"/>.</summary>
-    public static async Task<IResult> ExecuteAsync(this IResult result, Func<Task<IResult>> resultFunc)
-        => result.IsSuccess ? await resultFunc() : result;
+    public static async Task<Result<Tout>> ExecuteAsync<Tin, Tout>(this Result<Tin> result, Func<Task<Result<Tout>>> resultFunc)
+        => result.IsSuccess ? await resultFunc() : result.Error!;
 
     /// <summary>Executes an async task according to an input <see cref="Result"/>.</summary>
     public static async Task ExecuteAsync(this IResult result, Func<Task> resultAct)
@@ -29,7 +29,7 @@ public static class ResultExecuteExtensions
     public static async Task<Result> ParallelExecuteAsync(this IResult result, params Func<Task<IResult>>[] resultFuncs)
     {
         if (result.IsFailure)
-            return Result.Failure(result.Error!);
+            return result.Error!;
 
         var tasks = resultFuncs.Select(resultFunc => resultFunc());
         var results = await Task.WhenAll(tasks);

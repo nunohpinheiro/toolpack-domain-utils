@@ -1,8 +1,5 @@
 namespace ToolPack.DomainUtils.Functional.UnitTests;
 
-using FluentAssertions;
-using ToolPack.DomainUtils.Functional;
-
 public class ResultTests
 {
     [Test]
