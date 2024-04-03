@@ -6,6 +6,8 @@ Useful opinionated domain components and/or helper functions for .NET solutions.
 
 Classes and interfaces to help with functional programming in C#.
 
+* NuGet package: [ToolPack.DomainUtils.Functional](https://www.nuget.org/packages/ToolPack.DomainUtils.Functional)
+
 ### `Result<T>`, `Result`, `Error` and `Success`
 
 This is a simple implementation of the Result pattern in C#.
