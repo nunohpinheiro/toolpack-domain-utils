@@ -1,4 +1,4 @@
-namespace ToolPack.DomainUtils.Functional.UnitTests;
+namespace UnitTests.Functional;
 
 public class ResultTests
 {
@@ -8,7 +8,7 @@ public class ResultTests
         Result<object> resultError1 = new Error("error-message", "one-title");
         Result<string> resultError2 = new Error("error-message", resultError1.Error!.Title);
         Result resultError3 = new Error("another-error-message", "three-title");
-        
+
         var combinedResult = Result.Combine(resultError1, resultError2, resultError3);
 
         combinedResult.Should()
