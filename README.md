@@ -20,7 +20,7 @@ The package contains `Result<T>` and `Result` (_i.e._ `Result<Success>`) classes
    * [The ServiceResult Pattern](https://codingbolt.net/2023/10/06/the-serviceresult-pattern/)
    * [Functional C#: Handling failures, input errors](https://enterprisecraftsmanship.com/posts/functional-c-handling-failures-input-errors/)
    * [Improving API error responses with the Result pattern](https://raygun.com/blog/api-error-reponses-results-pattern/)
-   * [What�s the Result Type Everyone Is Using in .NET?](https://www.youtube.com/watch?v=YbuSuSpzee4)
+   * [What's the Result Type Everyone Is Using in .NET?](https://www.youtube.com/watch?v=YbuSuSpzee4)
 
 ### Result extension methods
 
